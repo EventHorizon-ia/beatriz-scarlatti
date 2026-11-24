@@ -60,4 +60,35 @@ beatriz-scarlatti-beauty/
 ├── js/
 │   └── script.js
 ├── assets/
-│   └──
+│   └── ...
+└── README.md
+```
+
+## Contact
+
+**Beatriz Scarlatti Beauty**
+
+Rua da Fé, nº 6-3, Loja 1  
+Jardim Urano  
+São José do Rio Preto - SP
+
+**WhatsApp:** (17) 99186-8273  
+**Instagram:** @beatrizscarlatti.beauty
+
+## Development
+
+This project is maintained as an independent repository, allowing the website to be developed, updated, and deployed separately from other EventHorizon-Web projects.
+
+## Team
+
+Developed by **Lucas and Tiago** under the **EventHorizon-AI** initiative.
+
+## Related Projects
+
+This website is part of **EventHorizon-Web**, our web development initiative focused on creating digital experiences for businesses and professionals.
+
+**[EventHorizon-Web](https://github.com/EventHorizon-ia/EventHorizon-Web)**
+
+---
+
+*From ideas to digital experiences.*
