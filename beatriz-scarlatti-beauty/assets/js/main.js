@@ -30,9 +30,72 @@
     toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
     document.body.style.overflow = open ? 'hidden' : '';
   };
+  let scrollFrame = null;
+  const cancelScroll = () => {
+    if (scrollFrame !== null) cancelAnimationFrame(scrollFrame);
+    scrollFrame = null;
+  };
+  const animateScrollTo = (target, hash) => {
+    const start = window.scrollY;
+    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const destination = Math.max(0, Math.min(
+      maxScroll,
+      target.getBoundingClientRect().top + start - header.offsetHeight
+    ));
+    const distance = destination - start;
+
+    if (Math.abs(distance) < 1) {
+      if (window.location.hash !== hash) window.history.pushState(null, '', hash);
+      return;
+    }
+
+    const duration = 1500 + Math.min(Math.abs(distance) / maxScroll, 1) * 1000;
+    const startTime = performance.now();
+    const easeInOutCubic = progress => progress < 0.5
+      ? 4 * progress ** 3
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    const step = time => {
+      const progress = Math.min((time - startTime) / duration, 1);
+      const position = start + distance * easeInOutCubic(progress);
+      window.scrollTo({ top: position, behavior: 'instant' });
+
+      if (progress < 1) {
+        scrollFrame = requestAnimationFrame(step);
+      } else {
+        scrollFrame = null;
+        if (window.location.hash !== hash) window.history.pushState(null, '', hash);
+      }
+    };
+
+    scrollFrame = requestAnimationFrame(step);
+  };
   toggle.addEventListener('click', () => setMenu(!header.classList.contains('menu-open')));
-  $$('#nav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
-  window.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+  $$('#header a[href^="#"]').forEach(a => a.addEventListener('click', event => {
+    setMenu(false);
+
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    const destination = new URL(a.href);
+    if (destination.origin !== window.location.origin
+      || destination.pathname !== window.location.pathname
+      || destination.search !== window.location.search
+      || !destination.hash) return;
+
+    const target = document.getElementById(decodeURIComponent(destination.hash.slice(1)));
+    if (!target) return;
+
+    event.preventDefault();
+    cancelScroll();
+    animateScrollTo(target, destination.hash);
+  }));
+  window.addEventListener('wheel', cancelScroll, { passive: true });
+  window.addEventListener('touchstart', cancelScroll, { passive: true });
+  window.addEventListener('pointerdown', cancelScroll, { passive: true });
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') setMenu(false);
+    if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(e.key)) cancelScroll();
+  });
 
   /* ===== Animação de entrada ao rolar ===== */
   const items = $$('.reveal');
