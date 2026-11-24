@@ -1,0 +1,10 @@
+BEATRIZ SCARLATTI BEAUTY — como editar o site
+
+1. Logo: assets/img/logo-branca.png (fundo escuro: hero e rodapé) e assets/img/logo-bordo.png (fundo claro: menu ao rolar). Ambas vêm da logo oficial, com fundo transparente.
+2. Foto de fundo do hero: assets/img/hero.jpg
+3. Foto da profissional/espaço: troque assets/img/sobre.svg no index.html
+4. Galeria: coloque as fotos em assets/img/galeria/ e altere src/alt de cada imagem na seção GALERIA.
+5. Prévia de compartilhamento: assets/img/og-image.jpg (já criada com a logo). Ao publicar, use o endereço completo do site na meta og:image.
+6. Horário de funcionamento: há um comentário na seção LOCALIZAÇÃO indicando onde adicionar.
+7. WhatsApp e mensagem: assets/js/main.js (topo do arquivo).
+8. Cores e fontes: variáveis no início de assets/css/style.css.
