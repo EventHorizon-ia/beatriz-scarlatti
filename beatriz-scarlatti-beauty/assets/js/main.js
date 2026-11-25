@@ -42,7 +42,10 @@
         if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    items.forEach((el, i) => { el.style.transitionDelay = `${(i % 4) * 90}ms`; io.observe(el); });
+    items.forEach((el, i) => {
+      if (!el.closest('.hero')) el.style.transitionDelay = `${(i % 4) * 90}ms`;
+      io.observe(el);
+    });
   } else {
     items.forEach(el => el.classList.add('is-visible'));
   }
